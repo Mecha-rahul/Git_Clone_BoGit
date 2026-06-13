@@ -52,13 +52,13 @@ class Tree(GitObject):
     def __init__(self, entries: list = None):
         self.entries = entries or []
         content = self._serialize_entries()
-        super().__init__("tree", content)          # FIX: pass content, not entries list
+        super().__init__("tree", content)        
 
     def _serialize_entries(self) -> bytes:
         content = b""
         for mode, name, obj_hash in sorted(self.entries):
             content += f"{mode} {name}\0".encode()
-            content += bytes.fromhex(obj_hash)     # FIX: fromhex not fromhext
+            content += bytes.fromhex(obj_hash)   
         return content
 
     def add_entry(self, mode: str, name: str, obj_hash: str):
@@ -73,12 +73,12 @@ class Tree(GitObject):
     def from_content(cls, content: bytes) -> "Tree":
         tree = cls()
         i = 0
-        while i < len(content):                   # FIX: len(content) not content()
+        while i < len(content):                
             null_idx = content.find(b"\0", i)
             if null_idx == -1:
                 break
             mode_name = content[i:null_idx].decode()
-            mode, name = mode_name.split(" ", 1)  # FIX: split on space, not empty string
+            mode, name = mode_name.split(" ", 1)  
             obj_hash = content[null_idx + 1: null_idx + 21].hex()
             tree.entries.append((mode, name, obj_hash))
             i = null_idx + 21
@@ -261,14 +261,14 @@ class Repository:
 
         for file_path, blob_hash in index.items():
             parts = file_path.split("/")
-            if len(parts) == 1:                   # FIX: len(parts) not (parts)
+            if len(parts) == 1:               
                 files[parts[0]] = blob_hash
             else:
                 dir_name = parts[0]
                 if dir_name not in dirs:
                     dirs[dir_name] = {}
 
-                current = dirs[dir_name]           # FIX: dirs not dir
+                current = dirs[dir_name]      
                 for part in parts[1:-1]:
                     if part not in current:
                         current[part] = {}
@@ -350,9 +350,9 @@ def main():
     add_parser = subparsers.add_parser("add", help="Add files/directories to staging area")
     add_parser.add_argument("paths", nargs="+", help="Files and directories to add")
 
-    commit_parser = subparsers.add_parser("commit", help="Create a new commit")   # FIX: help= not hepl=
+    commit_parser = subparsers.add_parser("commit", help="Create a new commit")   
     commit_parser.add_argument("-m", "--message", help="Commit message", required=True)
-    commit_parser.add_argument("--author", help="Author name and email")          # FIX: help= not hepl=
+    commit_parser.add_argument("--author", help="Author name and email")         
 
     args = parser.parse_args()
 
