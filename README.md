@@ -11,7 +11,7 @@ While using Git in my projects, I became curious about what actually happens beh
 * `git init`
 * `git add`
 * `git commit`
-* `git status`
+  
 
 To explore these concepts, I started building **Bogit**, a lightweight Git clone that helps me learn how version control systems work from the ground up.
 
